@@ -7,113 +7,82 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <title>美容師求人リールメーカー</title>
-    <link rel="stylesheet" href="styles.css">
-  </head>
-  <body>
-    <main class="app-shell">
-      <header class="app-header">
-        <p class="eyebrow">求人リール生成ツール</p>
-        <h1>美容師求人リールメーカー</h1>
-        <p class="lead">サロンのリアルを入力するだけで、「ここで働きたい」と思わせる求人リールの台本・編集指示・投稿文を一括生成します。</p>
-      </header>
-
-      <section class="workspace" aria-label="入力と生成結果">
-        <form id="reelForm" class="panel input-panel">
-          <div class="panel-heading">
-            <h2>求人情報</h2>
-            <button type="button" class="ghost-button" id="sampleButton">例を入力</button>
-          </div>
-
-          <p class="mobile-note">iPhoneでも使いやすいように、入力内容はこの端末に自動保存されます。</p>
-
-          <label class="field">
-            <span>募集職種</span>
-            <select id="role" name="role">
-              <option value="">選択してください</option>
-              <option value="アシスタント">アシスタント</option>
-              <option value="スタイリスト">スタイリスト</option>
-            </select>
-          </label>
-
-          <label class="field">
-            <span>地域</span>
-            <input id="area" name="area" type="text" placeholder="例：渋谷 / 横浜 / 名古屋" autocomplete="off" autocapitalize="off">
-          </label>
-
-          <fieldset class="field-group">
-            <legend>サロンの強み（最大3つ）</legend>
-            <input id="strength1" name="strength1" type="text" placeholder="例：高単価">
-            <input id="strength2" name="strength2" type="text" placeholder="例：髪質改善特化">
-            <input id="strength3" name="strength3" type="text" placeholder="例：教育制度">
-          </fieldset>
-
-          <label class="field">
-            <span>働き方</span>
-            <input id="workStyle" name="workStyle" type="text" placeholder="例：週休2日 / マンツーマン / 業務委託" autocapitalize="off">
-          </label>
-
-          <label class="field">
-            <span>給与モデル</span>
-            <input id="salary" name="salary" type="text" placeholder="例：月30万〜 / 指名売上歩合あり" autocapitalize="off">
-          </label>
-
-          <label class="field">
-            <span>スタッフの雰囲気</span>
-            <input id="teamMood" name="teamMood" type="text" placeholder="例：仲良い / 落ち着いてる / 相談しやすい" autocapitalize="off">
-          </label>
-
-          <label class="field">
-            <span>1日の流れ</span>
-            <textarea id="dailyFlow" name="dailyFlow" rows="3" placeholder="例：朝礼→予約確認→施術→空き時間に練習→終礼なしで退勤"></textarea>
-          </label>
-
-          <fieldset class="field-group">
-            <legend>おすすめポイント（3つ）</legend>
-            <input id="point1" name="point1" type="text" placeholder="例：無理な掛け持ちなし">
-            <input id="point2" name="point2" type="text" placeholder="例：営業中レッスンOK">
-            <input id="point3" name="point3" type="text" placeholder="例：新規入客しやすい">
-          </fieldset>
-
-          <label class="field">
-            <span>ターゲット人材</span>
-            <input id="targetTalent" name="targetTalent" type="text" placeholder="例：向上心ある人 / プライベート重視" autocapitalize="off">
-          </label>
-
-          <div class="form-actions">
-            <button type="button" class="ghost-button" id="clearButton">入力を消す</button>
-            <button type="submit" class="primary-button">生成する</button>
-          </div>
-        </form>
-
-        <section class="panel result-panel" aria-live="polite" id="resultsSection">
-          <div class="panel-heading result-heading">
-            <div>
-              <h2>生成結果</h2>
-              <p id="resultStatus">入力後に「生成する」を押してください。</p>
-            </div>
-            <div class="result-actions">
-              <button type="button" class="ghost-button" id="shareButton" disabled>共有</button>
-              <button type="button" class="ghost-button" id="copyAllButton" disabled>全部コピー</button>
-            </div>
-          </div>
-
-          <div id="results" class="results empty-state">
-            <p>ここに求人リール台本・テロップ・編集指示・キャプション・CTA・ハッシュタグが表示されます。</p>
-          </div>
-        </section>
-      </section>
-    </main>
-
-    <template id="resultBlockTemplate">
-      <article class="result-block">
-        <div class="result-block-header">
-          <h3></h3>
-          <button type="button" class="copy-button">コピー</button>
-        </div>
-        <pre></pre>
-      </article>
-    </template>
-
-    <script src="script.js"></script>
-  </body>
-</html>
+    <style>
+:root {
+  --bg: #f7f7f4;
+  --surface: #ffffff;
+  --surface-soft: #f1f5f3;
+  --text: #1f2421;
+  --muted: #68716c;
+  --line: #dfe5e1;
+  --accent: #1f7a5a;
+  --accent-dark: #14543f;
+  --accent-soft: #e5f4ed;
+  --warning: #9a5b24;
+  --shadow: 0 18px 45px rgba(31, 36, 33, 0.08);
+}
+* {
+  box-sizing: border-box;
+}
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Yu Gothic", "YuGothic", "Noto Sans JP", sans-serif;
+  line-height: 1.6;
+  -webkit-text-size-adjust: 100%;
+}
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+button {
+  cursor: pointer;
+}
+.app-shell {
+  width: min(1180px, 100%);
+  margin: 0 auto;
+  padding: max(24px, env(safe-area-inset-top)) 14px max(40px, env(safe-area-inset-bottom)) 14px;
+}
+.app-header {
+  margin-bottom: 18px;
+}
+.eyebrow {
+  margin: 0 0 6px;
+  color: var(--accent);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+h1,
+h2,
+h3,
+p {
+  margin-top: 0;
+}
+h1 {
+  margin-bottom: 8px;
+  font-size: clamp(1.9rem, 5vw, 3rem);
+  line-height: 1.15;
+}
+.lead {
+  max-width: 760px;
+  margin-bottom: 0;
+  color: var(--muted);
+  font-size: 0.98rem;
+}
+.workspace {
+  display: grid;
+  grid-template-columns: minmax(0, 420px) minmax(0, 1fr);
+  gap: 18px;
+  align-items: start;
+}
+.panel {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  box-shadow: var(--shadow);
+}
