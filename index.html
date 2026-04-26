@@ -7,7 +7,391 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <title>美容師求人リールメーカー</title>
-    <link rel="stylesheet" href="styles.css">
+    <style>
+:root {
+  --bg: #f7f7f4;
+  --surface: #ffffff;
+  --surface-soft: #f1f5f3;
+  --text: #1f2421;
+  --muted: #68716c;
+  --line: #dfe5e1;
+  --accent: #1f7a5a;
+  --accent-dark: #14543f;
+  --accent-soft: #e5f4ed;
+  --warning: #9a5b24;
+  --shadow: 0 18px 45px rgba(31, 36, 33, 0.08);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Yu Gothic", "YuGothic", "Noto Sans JP", sans-serif;
+  line-height: 1.6;
+  -webkit-text-size-adjust: 100%;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+.app-shell {
+  width: min(1180px, 100%);
+  margin: 0 auto;
+  padding: max(24px, env(safe-area-inset-top)) 14px max(40px, env(safe-area-inset-bottom)) 14px;
+}
+
+.app-header {
+  margin-bottom: 18px;
+}
+
+.eyebrow {
+  margin: 0 0 6px;
+  color: var(--accent);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+
+h1,
+h2,
+h3,
+p {
+  margin-top: 0;
+}
+
+h1 {
+  margin-bottom: 8px;
+  font-size: clamp(1.9rem, 5vw, 3rem);
+  line-height: 1.15;
+}
+
+.lead {
+  max-width: 760px;
+  margin-bottom: 0;
+  color: var(--muted);
+  font-size: 0.98rem;
+}
+
+.workspace {
+  display: grid;
+  grid-template-columns: minmax(0, 420px) minmax(0, 1fr);
+  gap: 18px;
+  align-items: start;
+}
+
+.panel {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  box-shadow: var(--shadow);
+}
+
+.input-panel,
+.result-panel {
+  padding: 16px;
+}
+
+.input-panel {
+  position: sticky;
+  top: 14px;
+}
+
+.panel-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.panel-heading h2 {
+  margin-bottom: 0;
+  font-size: 1.15rem;
+}
+
+.mobile-note {
+  margin: 0 0 14px;
+  padding: 10px 12px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--surface-soft);
+  color: var(--muted);
+  font-size: 0.88rem;
+}
+
+.result-heading {
+  align-items: flex-start;
+}
+
+.result-heading p {
+  margin: 4px 0 0;
+  color: var(--muted);
+  font-size: 0.88rem;
+}
+
+.field,
+.field-group {
+  display: grid;
+  gap: 7px;
+  margin: 0 0 14px;
+}
+
+.field span,
+.field-group legend {
+  color: var(--text);
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+
+.field-group {
+  border: 0;
+  padding: 0;
+}
+
+.field-group input + input {
+  margin-top: 7px;
+}
+
+input,
+select,
+textarea {
+  width: 100%;
+  min-height: 46px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #fff;
+  color: var(--text);
+  padding: 11px 12px;
+  outline: 0;
+  transition: border-color 0.16s ease, box-shadow 0.16s ease;
+}
+
+select {
+  appearance: none;
+  background-image: linear-gradient(45deg, transparent 50%, var(--muted) 50%), linear-gradient(135deg, var(--muted) 50%, transparent 50%);
+  background-position: calc(100% - 18px) 20px, calc(100% - 13px) 20px;
+  background-repeat: no-repeat;
+  background-size: 5px 5px, 5px 5px;
+  padding-right: 38px;
+}
+
+textarea {
+  resize: vertical;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-soft);
+}
+
+.primary-button,
+.ghost-button,
+.copy-button {
+  min-height: 46px;
+  border-radius: 8px;
+  border: 1px solid transparent;
+  padding: 9px 14px;
+  font-weight: 700;
+  touch-action: manipulation;
+}
+
+.primary-button {
+  width: 100%;
+  background: var(--accent);
+  color: #fff;
+}
+
+.primary-button:active {
+  background: var(--accent-dark);
+}
+
+.ghost-button,
+.copy-button {
+  background: var(--surface-soft);
+  color: var(--text);
+  border-color: var(--line);
+}
+
+.ghost-button:disabled,
+.copy-button:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.form-actions,
+.result-actions {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.results {
+  display: grid;
+  gap: 12px;
+}
+
+.empty-state {
+  min-height: 240px;
+  place-items: center;
+  border: 1px dashed var(--line);
+  border-radius: 8px;
+  background: var(--surface-soft);
+  color: var(--muted);
+  padding: 22px;
+  text-align: center;
+}
+
+.empty-state p {
+  margin: 0;
+}
+
+.result-block {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  overflow: hidden;
+  background: #fff;
+}
+
+.result-block-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 10px 12px;
+  background: var(--surface-soft);
+  border-bottom: 1px solid var(--line);
+}
+
+.result-block-header h3 {
+  margin: 0;
+  font-size: 0.98rem;
+}
+
+.result-block-header h4 {
+  margin: 0;
+  font-size: 0.98rem;
+}
+
+.variant-section {
+  display: grid;
+  gap: 12px;
+  padding: 12px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #fcfcfb;
+}
+
+.variant-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.variant-header h3 {
+  margin: 0 0 4px;
+  font-size: 1.02rem;
+}
+
+.variant-header p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.88rem;
+}
+
+.copy-button {
+  min-width: 76px;
+  min-height: 40px;
+  padding: 7px 10px;
+  font-size: 0.86rem;
+}
+
+pre {
+  margin: 0;
+  padding: 13px 12px 15px;
+  white-space: pre-wrap;
+  word-break: break-word;
+  color: var(--text);
+  font-family: inherit;
+  font-size: 0.94rem;
+}
+
+.notice {
+  margin: 0 0 12px;
+  border-left: 4px solid var(--warning);
+  background: #fff7ec;
+  color: #5f3918;
+  padding: 10px 12px;
+  border-radius: 8px;
+  font-size: 0.9rem;
+}
+
+@media (max-width: 860px) {
+  .app-shell {
+    padding: 18px 12px 32px;
+  }
+
+  .workspace {
+    grid-template-columns: 1fr;
+  }
+
+  .input-panel {
+    position: static;
+  }
+}
+
+@media (max-width: 520px) {
+  .app-header {
+    margin-bottom: 14px;
+  }
+
+  .input-panel,
+  .result-panel {
+    padding: 13px;
+  }
+
+  .panel-heading {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .form-actions,
+  .result-actions {
+    grid-template-columns: 1fr;
+  }
+
+  .result-block-header {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .variant-header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .ghost-button,
+  .copy-button {
+    width: 100%;
+  }
+}
+
+    </style>
   </head>
   <body>
     <main class="app-shell">
@@ -103,7 +487,555 @@
         </section>
       </section>
     </main>
+    <script>
+const form = document.querySelector("#reelForm");
+const results = document.querySelector("#results");
+const statusText = document.querySelector("#resultStatus");
+const copyAllButton = document.querySelector("#copyAllButton");
+const shareButton = document.querySelector("#shareButton");
+const sampleButton = document.querySelector("#sampleButton");
+const clearButton = document.querySelector("#clearButton");
+const resultsSection = document.querySelector("#resultsSection");
 
-    <script src="script.js"></script>
+let latestVariants = [];
+const STORAGE_KEY = "hair-salon-recruit-reels-form";
+
+const sampleData = {
+  role: "スタイリスト",
+  area: "渋谷",
+  strength1: "高単価",
+  strength2: "髪質改善特化",
+  strength3: "教育制度がしっかりしている",
+  workStyle: "週休2日・マンツーマン施術・無理な掛け持ちなし",
+  salary: "月30万〜。指名売上に応じて歩合あり",
+  teamMood: "落ち着いていて、困った時にすぐ相談できる雰囲気",
+  dailyFlow: "朝は予約確認からスタート。営業中はマンツーマンでお客様に集中。空き時間に技術共有や撮影、終わったら長い終礼なしで退勤。",
+  point1: "新規入客しやすい",
+  point2: "営業中に練習や撮影の時間を取りやすい",
+  point3: "プライベートの時間も大切にできる",
+  targetTalent: "技術を伸ばしたい人・お客様と丁寧に向き合いたい人"
+};
+
+const variantPresets = [
+  {
+    key: "empathy",
+    label: "共感重視",
+    summary: "今の職場のしんどさに寄り添って、転職動機を強く刺激する型"
+  },
+  {
+    key: "conditions",
+    label: "条件重視",
+    summary: "給与・休日・働き方を前に出して、比較検討中の人に刺す型"
+  },
+  {
+    key: "atmosphere",
+    label: "雰囲気重視",
+    summary: "人間関係や空気感を伝えて、ここで働くイメージを持たせる型"
+  }
+];
+
+restoreFormData();
+updateShareButtonState();
+
+sampleButton.addEventListener("click", () => {
+  Object.entries(sampleData).forEach(([key, value]) => {
+    const input = form.elements[key];
+    if (input) input.value = value;
+  });
+  persistFormData();
+});
+
+form.addEventListener("input", persistFormData);
+form.addEventListener("change", persistFormData);
+
+form.addEventListener("submit", (event) => {
+  event.preventDefault();
+  const data = getFormData();
+  latestVariants = buildVariants(data);
+  renderResults(latestVariants, data.missing);
+  resultsSection.scrollIntoView({ behavior: "smooth", block: "start" });
+});
+
+copyAllButton.addEventListener("click", async () => {
+  if (!latestVariants.length) return;
+  await copyText(buildCombinedText(latestVariants), copyAllButton);
+});
+
+shareButton.addEventListener("click", async () => {
+  if (!latestVariants.length) return;
+  const text = buildCombinedText(latestVariants);
+
+  try {
+    await navigator.share({
+      title: "美容師求人リールメーカー",
+      text
+    });
+  } catch (error) {
+    if (error && error.name === "AbortError") return;
+    await copyText(text, shareButton);
+  }
+});
+
+clearButton.addEventListener("click", () => {
+  form.reset();
+  try {
+    localStorage.removeItem(STORAGE_KEY);
+  } catch (error) {
+    // localStorageが使えない環境でも画面のリセットは続ける
+  }
+  latestVariants = [];
+  resetResults();
+  statusText.textContent = "入力を消しました。必要な内容を入れて生成してください。";
+  copyAllButton.disabled = true;
+  updateShareButtonState();
+});
+
+function getFormData() {
+  const values = formToObject(form);
+  const strengths = [values.strength1, values.strength2, values.strength3]
+    .map(clean)
+    .filter(Boolean)
+    .slice(0, 3);
+  const points = [values.point1, values.point2, values.point3]
+    .map(clean)
+    .filter(Boolean)
+    .slice(0, 3);
+
+  const normalized = {
+    role: clean(values.role) || "美容師",
+    area: clean(values.area) || "エリア未設定",
+    strengths,
+    workStyle: clean(values.workStyle) || "無理なく続けやすい働き方",
+    salary: clean(values.salary) || "頑張りが給与に反映される給与モデル",
+    teamMood: clean(values.teamMood) || "相談しやすく、落ち着いた雰囲気",
+    dailyFlow: clean(values.dailyFlow) || "予約確認から始まり、施術に集中。空き時間に練習や共有をして、営業後はメリハリをつけて退勤。",
+    points,
+    targetTalent: clean(values.targetTalent) || "美容師として成長したい人・働き方を見直したい人"
+  };
+
+  normalized.strengthText = strengths.length ? strengths.join("・") : "高単価・教育制度・働きやすさ";
+  normalized.pointText = points.length ? points.join("・") : "入客しやすい・相談しやすい・プライベートも大切にできる";
+  normalized.mainStrength = strengths[0] || "働きやすさ";
+  normalized.mainPoint = points[0] || "無理なく続けやすい";
+  normalized.hasArea = normalized.area !== "エリア未設定";
+  normalized.missing = Object.values(values).every((value) => !clean(value));
+
+  return normalized;
+}
+
+function clean(value) {
+  return String(value || "").replace(/\s+/g, " ").trim();
+}
+
+function buildVariants(data) {
+  return variantPresets.map((preset) => {
+    const variantData = buildVariantData(data, preset.key);
+
+    return {
+      label: preset.label,
+      summary: preset.summary,
+      blocks: [
+        { title: "① リール台本（40秒構成）", body: buildScript(variantData) },
+        { title: "② テロップ一覧", body: buildTelops(variantData) },
+        { title: "③ CapCut編集指示", body: buildCapCut(variantData) },
+        { title: "④ Instagram投稿用キャプション", body: buildCaption(variantData) },
+        { title: "⑤ CTA文", body: buildCta(variantData) },
+        { title: "⑥ ハッシュタグ候補", body: buildHashtags(variantData) }
+      ]
+    };
+  });
+}
+
+function buildVariantData(base, mode) {
+  const areaLead = base.hasArea ? `${base.area}で` : "";
+  const common = {
+    ...base,
+    mode,
+    areaLead,
+    hookRole: base.role === "美容師" ? "美容師さん" : `${base.role}さん`
+  };
+
+  if (mode === "conditions") {
+    return {
+      ...common,
+      hook: `「${base.salary}や${base.workStyle}で働きたい${common.hookRole}、見てください」`,
+      pain: "休みが少ない、単価が上がりにくい、掛け持ちで毎日がバタバタ。条件で妥協し続けるのって、やっぱりしんどいですよね。",
+      realFocus: `うちは${base.strengthText}が強みで、働き方は${base.workStyle}。${base.pointText}みたいな働きやすさをちゃんと形にしています。`,
+      appeal: `給与モデルは${base.salary}。${base.targetTalent}で、条件も雰囲気も両方大事にしたい人にはかなり合います。`,
+      ctaLead: "条件面が気になる方は、DMで質問だけでも大丈夫です。",
+      bgm: "明るい",
+      captionLead: `${areaLead}${base.role}で、条件を見直したい方へ。`,
+      telopLead: "条件で妥協したくない人へ",
+      hashtagFocus: ["求人条件", "週休2日", "業務委託", "高単価サロン"]
+    };
+  }
+
+  if (mode === "atmosphere") {
+    return {
+      ...common,
+      hook: `「この空気感で働きたい${common.hookRole}、たぶん相性いいです」`,
+      pain: "人間関係に気を使いすぎる、相談しづらい、職場の空気で消耗する。技術より先に、そこがつらい時ってありますよね。",
+      realFocus: `スタッフの雰囲気は${base.teamMood}。1日は${base.dailyFlow}。無理に盛らず、自然体で働ける空気があるサロンです。`,
+      appeal: `${base.mainPoint}みたいな良さがあって、${base.targetTalent}にはすごくなじみやすい環境です。`,
+      ctaLead: "まずは雰囲気を見たい方、見学だけでも大歓迎です。",
+      bgm: "エモい",
+      captionLead: `${areaLead}${base.role}として、空気感の合うサロンを探している方へ。`,
+      telopLead: "人間関係で消耗したくない人へ",
+      hashtagFocus: ["サロン見学", "少人数サロン", "人間関係良好", "美容師転職"]
+    };
+  }
+
+  return {
+    ...common,
+    hook: `「今の職場で少ししんどくなってる${common.hookRole}、これ見てください」`,
+    pain: "単価が上がらない、休みが取りにくい、人間関係で気を使いすぎる。美容師を続けたいのに、環境で迷うことありますよね。",
+    realFocus: `うちは${base.strengthText}が強みで、働き方は${base.workStyle}。${base.teamMood}空気感の中で、ちゃんと美容師を続けやすい環境をつくっています。`,
+    appeal: `給与モデルは${base.salary}。${base.pointText}もあるので、${base.targetTalent}にはかなり相性がいいです。`,
+    ctaLead: "気になる方は、いきなり応募じゃなくて大丈夫です。まずはDMで話しましょう。",
+    bgm: "エモい",
+    captionLead: `${areaLead}${base.role}として、今の働き方に少し疲れている方へ。`,
+    telopLead: "今の職場で少し疲れている人へ",
+    hashtagFocus: ["美容師転職", "美容師求人", "働き方見直し", "サロン見学"]
+  };
+}
+
+function buildScript(data) {
+  return `0〜3秒：フック
+${data.hook}
+画：スタッフの自然な表情、営業中の動き、店内の雰囲気をテンポよく
+
+3〜10秒：共感
+「${data.pain}」
+画：予約表、片付け、静かな手元、ふっと一息つく瞬間
+
+10〜25秒：サロンのリアル
+「${data.realFocus}」
+「1日の流れは、${data.dailyFlow}」
+画：カウンセリング、施術、会話、練習、撮影、退勤前の自然な様子
+
+25〜35秒：魅力
+「${data.appeal}」
+画：給与や休日のテロップ、スタッフ同士の距離感、営業風景
+
+35〜40秒：CTA
+「${data.ctaLead}」
+「見学だけ、質問だけでも歓迎しています。」`;
+}
+
+function buildTelops(data) {
+  return `感情を動かすワード
+・${data.telopLead}
+・ここなら続けやすそう
+・無理しすぎない働き方
+・${data.mainStrength}を活かせる環境
+・働くイメージがしやすい
+
+共感ワード
+・今の働き方、ずっと続けられる？
+・単価も休みも妥協したくない
+・人間関係で消耗したくない
+・相談しやすいサロンがいい
+・入客や成長に不安がある
+
+安心ワード
+・見学だけでもOK
+・質問だけのDMでも歓迎
+・いきなり応募じゃなくて大丈夫
+・条件の相談もできます
+・雰囲気を見てから決めてOK
+
+動画内で使いやすい短文
+・${data.area}で${data.role}募集
+・強み：${data.strengthText}
+・働き方：${data.workStyle}
+・給与：${data.salary}
+・こんな人に：${data.targetTalent}`;
+}
+
+function buildCapCut(data) {
+  return `全体設定
+・尺：40秒
+・比率：9:16
+・BGM：${data.bgm}。日常のリアルが伝わる曲
+・文字：白ベース、重要語だけ濃いグリーン
+・テンポ：最初は目を止めて、中盤から情報をテンポよく見せる
+
+カット秒数
+・0〜3秒：フック。笑顔、店内、営業風景を0.7秒〜1秒ずつ
+・3〜10秒：共感。悩みテロップを1秒前後で切り替える
+・10〜25秒：リアル。施術、会話、練習、退勤前を自然に見せる
+・25〜35秒：魅力。給与、強み、働き方を1項目ずつ
+・35〜40秒：CTA。見学やDM誘導を固定テロップで表示
+
+ズーム指示
+・0〜3秒：軽くズームイン
+・3〜10秒：手元や表情を寄りで見せる
+・10〜25秒：引きと寄りを交互に
+・25〜35秒：ゆっくりズームアウト
+・35〜40秒：画面は安定、CTAを読みやすく
+
+テロップ位置
+・フック：中央大きめ
+・共感：中央やや下
+・リアル：下3分の1
+・魅力：中央か左寄せ
+・CTA：下部固定
+
+推奨テロップ
+「${data.telopLead}」
+「${data.strengthText}が強み」
+「${data.workStyle}」
+「${data.salary}」
+「見学だけでもOK」`;
+}
+
+function buildCaption(data) {
+  return `${data.captionLead}
+
+「${data.pain}」
+
+転職を決めきれていなくても、こういう悩みがあるなら一度見てほしいです。
+
+うちの強みは${data.strengthText}。
+働き方は${data.workStyle}で、スタッフの雰囲気は${data.teamMood}です。
+
+1日の流れは、${data.dailyFlow}
+求人票だけでは伝わりにくいですが、働く空気感ってかなり大事だと思っています。
+
+${data.appeal}
+
+${data.ctaLead}
+「求人見ました」と送ってもらえたら、見学や条件の相談もスムーズです。`;
+}
+
+function buildCta(data) {
+  return `DM誘導
+・${data.ctaLead}
+・DMで「求人見ました」と送ってください。
+・まだ迷っている段階でも大丈夫です。
+
+見学誘導
+・サロン見学だけでも歓迎しています。
+・実際の空気感を見てから判断してもらって大丈夫です。
+・${data.area}で探している方は、一度見に来てください。
+
+質問しやすい一言
+・給与、休み、入客、レッスン時間など何でも聞いてください。
+・自分に合うか不安、だけでも相談OKです。
+・いきなり応募しなくても大丈夫です。`;
+}
+
+function buildHashtags(data) {
+  const baseTags = [
+    "美容師求人",
+    "美容師募集",
+    "美容師転職",
+    "美容師採用",
+    "美容室求人",
+    "アシスタント募集",
+    "スタイリスト募集",
+    "美容師新卒",
+    "美容師中途採用",
+    "サロン見学",
+    "美容師の働き方"
+  ];
+
+  const customSources = [data.area, data.role, data.workStyle]
+    .concat(data.strengths)
+    .concat(data.points)
+    .concat(data.hashtagFocus);
+  const customTags = flattenTagSources(customSources).map(toHashtag);
+
+  return unique([...customTags, ...baseTags.map(toHashtag)])
+    .filter((tag) => tag.length > 1 && tag !== "#エリア未設定")
+    .slice(0, 15)
+    .join(" ");
+}
+
+function splitTagSource(value) {
+  return String(value || "")
+    .split(/[、,・/／\s]+/)
+    .map(clean)
+    .filter(Boolean)
+    .slice(0, 4);
+}
+
+function toHashtag(value) {
+  return `#${String(value || "").replace(/[ #　、,・/／〜~.。]+/g, "")}`;
+}
+
+function unique(items) {
+  return [...new Set(items)];
+}
+
+function renderResults(variants, usedDefaults) {
+  results.innerHTML = "";
+  results.classList.remove("empty-state");
+
+  if (usedDefaults) {
+    const notice = document.createElement("p");
+    notice.className = "notice";
+    notice.textContent = "未入力だったため、よくある美容師求人リール向けの内容で生成しました。サロンのリアルを入れるほど、応募前の不安を減らせる文章になります。";
+    results.append(notice);
+  }
+
+  variants.forEach((variant) => {
+    const section = document.createElement("section");
+    section.className = "variant-section";
+
+    const header = document.createElement("div");
+    header.className = "variant-header";
+
+    const headerText = document.createElement("div");
+    const title = document.createElement("h3");
+    title.textContent = variant.label;
+    const summary = document.createElement("p");
+    summary.textContent = variant.summary;
+    headerText.appendChild(title);
+    headerText.appendChild(summary);
+
+    const copyButton = document.createElement("button");
+    copyButton.type = "button";
+    copyButton.className = "copy-button";
+    copyButton.textContent = `${variant.label}をコピー`;
+    copyButton.addEventListener("click", () => copyText(buildVariantText(variant), copyButton));
+
+    header.appendChild(headerText);
+    header.appendChild(copyButton);
+    section.appendChild(header);
+
+    variant.blocks.forEach((block) => {
+      const article = document.createElement("article");
+      article.className = "result-block";
+
+      const blockHeader = document.createElement("div");
+      blockHeader.className = "result-block-header";
+
+      const blockTitle = document.createElement("h4");
+      blockTitle.textContent = block.title;
+
+      const blockCopy = document.createElement("button");
+      blockCopy.type = "button";
+      blockCopy.className = "copy-button";
+      blockCopy.textContent = "コピー";
+      blockCopy.addEventListener("click", () => copyText(block.body, blockCopy));
+
+      blockHeader.appendChild(blockTitle);
+      blockHeader.appendChild(blockCopy);
+
+      const pre = document.createElement("pre");
+      pre.textContent = block.body;
+
+      article.appendChild(blockHeader);
+      article.appendChild(pre);
+      section.appendChild(article);
+    });
+
+    results.appendChild(section);
+  });
+
+  statusText.textContent = "3パターン生成しました。共感重視・条件重視・雰囲気重視を比較して使えます。";
+  copyAllButton.disabled = false;
+  updateShareButtonState();
+}
+
+function buildVariantText(variant) {
+  return [`【${variant.label}】`, variant.summary]
+    .concat(variant.blocks.map((block) => `${block.title}\n${block.body}`))
+    .join("\n\n");
+}
+
+function buildCombinedText(variants) {
+  return variants.map(buildVariantText).join("\n\n====================\n\n");
+}
+
+async function copyText(text, button) {
+  const original = button.textContent;
+  try {
+    await navigator.clipboard.writeText(text);
+    button.textContent = "コピー済み";
+    button.disabled = true;
+    window.setTimeout(() => {
+      button.textContent = original;
+      button.disabled = false;
+    }, 1200);
+  } catch (error) {
+    fallbackCopy(text);
+    button.textContent = "コピー済み";
+    window.setTimeout(() => {
+      button.textContent = original;
+    }, 1200);
+  }
+}
+
+function fallbackCopy(text) {
+  const textarea = document.createElement("textarea");
+  textarea.value = text;
+  textarea.setAttribute("readonly", "");
+  textarea.style.position = "fixed";
+  textarea.style.top = "-1000px";
+  document.body.append(textarea);
+  textarea.select();
+  document.execCommand("copy");
+  textarea.remove();
+}
+
+function persistFormData() {
+  const values = formToObject(form);
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(values));
+  } catch (error) {
+    return;
+  }
+}
+
+function restoreFormData() {
+  try {
+    const stored = localStorage.getItem(STORAGE_KEY);
+    if (!stored) return;
+    const values = JSON.parse(stored);
+    Object.entries(values).forEach(([key, value]) => {
+      const input = form.elements[key];
+      if (input) input.value = value;
+    });
+  } catch (error) {
+    localStorage.removeItem(STORAGE_KEY);
+  }
+}
+
+function updateShareButtonState() {
+  shareButton.disabled = !latestVariants.length;
+  shareButton.textContent = "share" in navigator ? "共有" : "共有代わりにコピー";
+}
+
+function resetResults() {
+  results.innerHTML = "<p>ここに3パターン分の求人リール台本・テロップ・編集指示・キャプション・CTA・ハッシュタグが表示されます。</p>";
+  results.classList.add("empty-state");
+}
+
+function formToObject(targetForm) {
+  const data = {};
+  const formData = new FormData(targetForm);
+
+  formData.forEach((value, key) => {
+    data[key] = value;
+  });
+
+  return data;
+}
+
+function flattenTagSources(values) {
+  const output = [];
+
+  values.forEach((value) => {
+    splitTagSource(value).forEach((item) => {
+      output.push(item);
+    });
+  });
+
+  return output;
+}
+
+    </script>
   </body>
 </html>
