@@ -496,6 +496,7 @@ const shareButton = document.querySelector("#shareButton");
 const sampleButton = document.querySelector("#sampleButton");
 const clearButton = document.querySelector("#clearButton");
 const resultsSection = document.querySelector("#resultsSection");
+const submitButton = document.querySelector(".primary-button");
 
 let latestVariants = [];
 const STORAGE_KEY = "hair-salon-recruit-reels-form";
@@ -550,10 +551,15 @@ form.addEventListener("change", persistFormData);
 
 form.addEventListener("submit", (event) => {
   event.preventDefault();
+  statusText.textContent = "生成しています...";
+  submitButton.textContent = "生成中...";
+  submitButton.disabled = true;
   const data = getFormData();
   latestVariants = buildVariants(data);
   renderResults(latestVariants, data.missing);
-  resultsSection.scrollIntoView({ behavior: "smooth", block: "start" });
+  scrollToResults();
+  submitButton.textContent = "生成する";
+  submitButton.disabled = false;
 });
 
 copyAllButton.addEventListener("click", async () => {
@@ -588,6 +594,8 @@ clearButton.addEventListener("click", () => {
   statusText.textContent = "入力を消しました。必要な内容を入れて生成してください。";
   copyAllButton.disabled = true;
   updateShareButtonState();
+  submitButton.textContent = "生成する";
+  submitButton.disabled = false;
 });
 
 function getFormData() {
@@ -1011,6 +1019,14 @@ function updateShareButtonState() {
 function resetResults() {
   results.innerHTML = "<p>ここに3パターン分の求人リール台本・テロップ・編集指示・キャプション・CTA・ハッシュタグが表示されます。</p>";
   results.classList.add("empty-state");
+}
+
+function scrollToResults() {
+  try {
+    resultsSection.scrollIntoView();
+  } catch (error) {
+    window.scrollTo(0, resultsSection.offsetTop || 0);
+  }
 }
 
 function formToObject(targetForm) {
